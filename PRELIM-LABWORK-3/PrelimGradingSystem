@@ -1,0 +1,49 @@
+import java.util.Scanner;
+
+public class PrelimGradingSystem {
+
+    public static void main(String[] args) {
+        Scanner input = new Scanner(System.in);
+
+        // Input section
+        System.out.print("Enter Attendance Grade: ");
+        double attendance = input.nextDouble();
+
+        System.out.print("Enter Lab Work 1 Grade: ");
+        double lab1 = input.nextDouble();
+
+        System.out.print("Enter Lab Work 2 Grade: ");
+        double lab2 = input.nextDouble();
+
+        System.out.print("Enter Lab Work 3 Grade: ");
+        double lab3 = input.nextDouble();
+
+        // Computation
+        double labAverage = (lab1 + lab2 + lab3) / 3;
+        double classStanding = (attendance * 0.40) + (labAverage * 0.60);
+
+        double passingExam = (75 - (classStanding * 0.70)) / 0.30;
+        double excellentExam = (100 - (classStanding * 0.70)) / 0.30;
+
+        // Output
+        System.out.println("\n--- PRELIM GRADE COMPUTATION ---");
+        System.out.println("Attendance: " + attendance);
+        System.out.println("Lab Work 1: " + lab1);
+        System.out.println("Lab Work 2: " + lab2);
+        System.out.println("Lab Work 3: " + lab3);
+        System.out.printf("Lab Work Average: %.2f%n", labAverage);
+        System.out.printf("Class Standing: %.2f%n", classStanding);
+
+        System.out.printf("\nRequired Prelim Exam to PASS (75): %.2f%n", passingExam);
+        System.out.printf("Required Prelim Exam for EXCELLENT (100): %.2f%n", excellentExam);
+
+        // Remarks
+        if (passingExam > 100) {
+            System.out.println("\nRemarks: Passing grade is NOT achievable.");
+        } else {
+            System.out.println("\nRemarks: Passing grade is achievable.");
+        }
+
+        input.close();
+    }
+}
