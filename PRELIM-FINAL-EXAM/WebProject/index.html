@@ -1,0 +1,110 @@
+<!-- Programmer Identifier: [Prince Ram Roydlikent F. Igna] - [25 - 2033 - 379] -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Records by Prince Ram</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- This is the header of the project and  -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <span class="logo-icon">📚</span>
+                <div class="logo-text">
+                    <h1>Student Records</h1>
+                    <p> Adventure Records Database</p>
+                </div>
+            </div>
+            <div class="badge">
+                <span>⚔️ CRUD System</span>
+            </div>
+        </div>
+    </header>
+    <!-- This is for the main content of the project -->
+    <main class="container">
+        <!-- Stats Bar -->
+        <div class="stats-bar" id="statsBar">
+            <!-- Stats will be rendered by the help of JavaScript -->
+        </div>
+        <!-- This helps the project to Add Student Form -->
+        <section class="form-section pixel-border-accent">
+            <h2>➕ Add New Student</h2>
+            <form id="studentForm" class="student-form">
+                <div class="form-group">
+                    <label for="studentID">📋 Student ID</label>
+                    <input type="text" id="studentID" placeholder="e.g., 123456789" required>
+                </div>
+                <div class="form-group">
+                    <label for="firstName">👤 First Name</label>
+                    <input type="text" id="firstName" placeholder="Enter first name" required>
+                </div>
+                <div class="form-group">
+                    <label for="lastName">👤 Last Name</label>
+                    <input type="text" id="lastName" placeholder="Enter last name" required>
+                </div>
+                <div class="form-group">
+                    <label for="lab1">🔬 Lab 1</label>
+                    <input type="number" id="lab1" min="0" max="100" placeholder="0-100" required>
+                </div>
+                <div class="form-group">
+                    <label for="lab2">🔬 Lab 2</label>
+                    <input type="number" id="lab2" min="0" max="100" placeholder="0-100" required>
+                </div>
+                <div class="form-group">
+                    <label for="lab3">🔬 Lab 3</label>
+                    <input type="number" id="lab3" min="0" max="100" placeholder="0-100" required>
+                </div>
+                <div class="form-group">
+                    <label for="prelim">📝 Prelim</label>
+                    <input type="number" id="prelim" min="0" max="100" placeholder="0-100" required>
+                </div>
+                <div class="form-group">
+                    <label for="attendance">📅 Attendance</label>
+                    <input type="number" id="attendance" min="0" max="100" placeholder="0-100" required>
+                </div>
+                <button type="submit" class="btn btn-primary">⚔️ Add Student</button>
+            </form>
+        </section>
+        <!-- This section is for the Student Table -->
+        <section class="table-section">
+            <h2>📜 Student Records (<span id="studentCount">0</span> entries)</h2>
+            <div class="table-wrapper pixel-border">
+                <table id="studentTable">
+                    <thead>
+                        <tr>
+                            <th>⛏️ Student ID</th>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <th>Lab 1</th>
+                            <th>Lab 2</th>
+                            <th>Lab 3</th>
+                            <th>Prelim</th>
+                            <th>Attendance</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody">
+                        <!-- Rows will be rendered by the help of JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+    <!-- Footer with Programmer Identifier -->
+    <!-- This section will be shown at the bottom of the page -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="programmer-id">
+                <p class="label">💻 Programmer Identifier</p>
+                <h3>[By Prince Ram] - [25 - 2033 - 379] </h3>
+            </div>
+            <p class="challenge-info"> "The gateway to your new experience."</p>
+        </div>
+    </footer>
+    <script src="script.js"></script>
+</body>

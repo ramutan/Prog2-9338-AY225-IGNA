@@ -50,15 +50,6 @@
         color: #ffffff;
     }
 
-    input:focus {
-        outline: 2px solid #5865F2;
-    }
-
-    small {
-        color: #b5bac1;
-        font-size: 12px;
-    }
-
     button {
         width: 100%;
         padding: 12px;
@@ -69,10 +60,6 @@
         color: white;
         font-weight: bold;
         cursor: pointer;
-    }
-
-    button:hover {
-        background: #4752c4;
     }
 
     .result {
@@ -89,17 +76,9 @@
         margin-bottom: 10px;
     }
 
-    .pass {
-        background: #43b581;
-    }
-
-    .fail {
-        background: #f04747;
-    }
-
-    .warning {
-        color: #faa61a;
-    }
+    .pass { background: #43b581; }
+    .fail { background: #f04747; }
+    .warning { color: #faa61a; }
 </style>
 </head>
 
@@ -109,12 +88,11 @@
     <h2>Prelim Grade System</h2>
 
     <label>Student Name</label>
-    <input type="text" id="studentName" placeholder="Enter your name">
+    <input type="text" id="studentName">
 
-    <label>Attendance Grade</label>
-    <!-- Attendance limited to 0–40 -->
-    <input type="number" id="attendance" min="0" max="40" step="1">
-    <small>Maximum: 40 points</small>
+    <label>Attendance Score</label>
+    <input type="number" id="attendance" min="0" max="100">
+    <small>Score range: 0–100</small>
 
     <label>Lab Work 1</label>
     <input type="number" id="lab1" min="0" max="100">
@@ -131,5 +109,6 @@
 </div>
 
 <script src="script.js"></script>
+
 </body>
 </html>
