@@ -1,10 +1,9 @@
 /**
- * =====================================================
+ * ============================================================================
  * Student Name    : Prince Ram Roydlikent F. Igna
  * Course          : BSCSIT 1203 Programming 2
- * Assignment      : Midterm Lab Work 2 (CSV Processor)
  * School          : University of Perpetual Help System DALTA
- * =====================================================
+ * ============================================================================
  */
 
 import java.io.*;
@@ -13,110 +12,107 @@ import java.util.stream.Collectors;
 
 public class CSVProcessor {
 
-    // A simple class to hold the data properly
     static class UserRecord {
-        String firstName, lastName, role, col3, col4, col5, score, language, result, time;
+        String name, role, pLang, cLang, date, score, result, time;
 
         public UserRecord(String[] data) {
-            // Fix Name splitting if it's "Last, First" in one column
-            if (data[0].contains(",")) {
-                String[] nameParts = data[0].split(",");
-                this.firstName = nameParts[0].trim();
-                this.lastName = (nameParts.length > 1) ? nameParts[1].trim() : "";
-            } else {
-                this.firstName = data[0];
-                this.lastName = (data.length > 1) ? data[1] : "";
-            }
-            
-            this.role = (data.length > 2 && !data[2].isEmpty()) ? data[2] : "Student";
-            this.col3 = (data.length > 3) ? data[3] : "";
-            this.col4 = (data.length > 4) ? data[4] : "";
-            this.col5 = (data.length > 5) ? data[5] : "";
-            this.score = (data.length > 6) ? data[6] : "-";
-            this.language = (data.length > 7) ? data[7] : "-";
-            this.result = (data.length > 8) ? data[8] : "-";
-            this.time = (data.length > 9) ? data[9] : "-";
+            /** * MAPPING BASED ON CSV STRUCTURE:
+             * Col 0: Name | Col 1: Role | Col 3: Programming Language
+             * Col 4: Course Language | Col 5: Exam Date | Col 6: Score
+             * Col 7: Result | Col 8: Time Used
+             */
+            this.name   = getSafe(data, 0, "Unknown");
+            this.role   = getSafe(data, 1, "Student"); 
+            this.pLang  = getSafe(data, 3, "N/A");      
+            this.cLang  = getSafe(data, 4, "English");  
+            this.date   = getSafe(data, 5, "03/14/2026");
+            this.score  = getSafe(data, 6, "000");
+            this.result = getSafe(data, 7, "FAIL");
+            this.time   = formatTime(getSafe(data, 8, "00:00"));
         }
 
-        public boolean containsKeyword(String key) {
-            String fullRow = (firstName + lastName + role + score + language + result).toLowerCase();
-            return fullRow.contains(key.toLowerCase());
+        private String getSafe(String[] arr, int index, String def) {
+            return (index < arr.length && !arr[index].isEmpty()) ? arr[index].trim() : def;
+        }
+
+        private String formatTime(String raw) {
+            // Standardizes time to numeric format
+            return raw.replaceAll("(?i)\\s*min\\s*", ":").replaceAll("(?i)\\s*sec\\s*", "").trim();
         }
 
         @Override
         public String toString() {
-            String fullName = String.format("%-25s", firstName + ", " + lastName);
-            String scoreResult = String.format("%-12s", score + " (" + result + ")");
-            return String.format("[ %s | %-10s | %-10s | %-10s | %s | %-8s ]", 
-                                fullName, role, col3, language, scoreResult, time);
+            // Column widths set to prevent cutting
+            return String.format("| %-18.18s | %-8.8s | %-50.50s | %-10.10s | %-12.12s | %-6.6s | %-7.7s | %-8.8s |", 
+                                 name, role, pLang, cLang, date, score, result, time);
         }
     }
 
     public static void main(String[] args) {
-        Scanner input = new Scanner(System.in);
         List<UserRecord> allRecords = new ArrayList<>();
+        String path = "MIDTERM-LABWORK-2/Sample_Data-Prog-2-.csv"; 
 
-        // Default Path
-        String defaultPath = "Sample_Data-Prog-2-.csv";
-        
-        System.out.print("Enter CSV path (Leave blank for default): ");
-        String path = input.nextLine();
-        if (path.isEmpty()) path = defaultPath;
-
-        try (BufferedReader reader = new BufferedReader(new FileReader(path))) {
-            // Skip the header line
-            String line = reader.readLine(); 
-            
-            while ((line = reader.readLine()) != null) {
-                if (line.trim().isEmpty()) continue;
+        try (BufferedReader br = new BufferedReader(new FileReader(path))) {
+            String line;
+            int count = 0;
+            while ((line = br.readLine()) != null) {
+                count++;
+                // Skip the 7 University header lines
+                if (count <= 7 || line.trim().isEmpty()) continue; 
                 
-                // Parse CSV logic
-                String[] rawCells = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
-                for (int i = 0; i < rawCells.length; i++) {
-                    rawCells[i] = rawCells[i].replace("\"", "").trim();
-                }
-
-                // Only add if it looks like a valid data row (contains Pass/Fail)
-                if (line.toUpperCase().contains("PASS") || line.toUpperCase().contains("FAIL")) {
-                    allRecords.add(new UserRecord(rawCells));
-                }
+                String[] cols = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
+                for (int i = 0; i < cols.length; i++) cols[i] = cols[i].replace("\"", "").trim();
+                allRecords.add(new UserRecord(cols));
             }
 
-            System.out.println("\n" + "=".repeat(50));
-            System.out.println("  DATA SYSTEM - MP01, MP08, MP16");
-            System.out.println("=".repeat(50));
+            System.out.println("============================================================================");
+            System.out.println("   CSV PROCESSOR - MP06, MP09, AND MP15 by Prince Ram Roydlikent F. Igna");
+            System.out.println("============================================================================");
 
-            // MP01: Total
-            System.out.println("\n>>> MP01: TOTAL ENTRY COUNT");
-            System.out.println("Total valid records found: " + allRecords.size());
+            // --- MP09: DATASET ANALYTICS ---
+            System.out.println("\n---- MP09: TOTAL RECORDS ----");
+            System.out.println("Total Records: " + allRecords.size());
 
-            // MP08: Filter
-            System.out.println("\n>>> MP08: SEARCH DATA");
-            System.out.print("Enter search term: ");
-            String query = input.nextLine();
-            
-            List<UserRecord> filtered = allRecords.stream()
-                    .filter(r -> r.containsKeyword(query))
-                    .collect(Collectors.toList());
+            // --- MP06: UNIQUE LANGUAGES ---
+            System.out.println("\n==== MP06: UNIQUE LANGUAGES IDENTIFIED ====");
+            Set<String> langs = allRecords.stream().map(r -> r.pLang).collect(Collectors.toCollection(TreeSet::new));
+            System.out.println("Detected: " + String.join(" | ", langs));
 
-            System.out.println("Matches for '" + query + "': " + filtered.size());
-            filtered.forEach(System.out::println);
+            // --- MP15: GRID VIEW (TOP 50) ---
+            printGrid(allRecords, 50);
 
-            // MP16: Shuffle 10
-            System.out.println("\n>>> MP16: RANDOM DATA PICK (10 ROWS)");
-            System.out.println("[ University of Perpetual Help System DALTA ]");
-            
-            List<UserRecord> randomList = new ArrayList<>(allRecords);
-            Collections.shuffle(randomList);
-            
-            randomList.stream().limit(10).forEach(System.out::println);
-
-            System.out.println("\n" + "=".repeat(50));
+            // Export logic
+            exportData(allRecords, 50, "MP15_Final_50_Rows.csv");
 
         } catch (IOException e) {
-            System.err.println("Error: Problem accessing the file. " + e.getMessage());
-        } finally {
-            input.close();
+            System.err.println("Error: File not found.");
+        }
+    }
+
+    private static void printGrid(List<UserRecord> records, int limit) {
+        // Adjusted HR to match the column widths
+        String hr = "+--------------------+----------+----------------------------------------------------+------------+--------------+--------+---------+----------+";
+        System.out.println("\n==== MP15: DATASET GRID VIEW (TOP " + limit + ") ====");
+        System.out.println(hr);
+        System.out.printf("| %-18s | %-8s | %-50s | %-10s | %-12s | %-6s | %-7s | %-8s |\n", 
+                          "FULL NAME", "ROLE", "PROGRAMMING LANGUAGE", "LANGUAGE", "DATE", "SCORE", "RESULT", "TIME");
+        System.out.println(hr);
+        
+        records.stream().limit(limit).forEach(System.out::println);
+        
+        System.out.println(hr);
+        System.out.println(" DISPLAYED: " + Math.min(limit, records.size()) + " RECORDS");
+    }
+
+    private static void exportData(List<UserRecord> records, int limit, String fileName) {
+        try (PrintWriter pw = new PrintWriter(new File(fileName))) {
+            pw.println("FullName,Role,ProgrammingLanguage,Language,Date,Score,Result,Time"); 
+            records.stream().limit(limit).forEach(r -> {
+                pw.printf("%s,%s,%s,%s,%s,%s,%s,%s\n", r.name, r.role, r.pLang, r.cLang, r.date, r.score, r.result, r.time);
+            });
+            System.out.println("\n[MP15] SUCCESS: " + fileName);
+        } catch (Exception e) {
+            System.out.println("Export failed.");
         }
     }
 }
